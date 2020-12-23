@@ -1,30 +1,67 @@
 ---
-title: "???"
+title: "Newspapers Facing Immense Difficulty:"
+subtitle: "A Reproduction of \"Newspapers in Times of Low Advertising Revenues\" by Charles Angelucci and Julia Cagé"
 author: "Cameron Fryer"
-date: "21/12/2020"
-output: pdf_document
+thanks: "Code and data are available at: https://github.com/camfryer/final_paper"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+abstract: |
+  | The goal of this paper is to reproduce the findings of Charles Angelucci and Julia Cagé within \"Newspapers in Times of Low Advertising Revenues.\" In doing so, I work with their \"unique[ly] [created] dataset on French newspapers between 1960 and 1974.\" {@angelucci_cage_2019} This data is significant because of its ability to demonstrate the isolated effects that television advertising's introduction had on newspapers. One of such effects is that, in comparison to local newspapers, national newspapers faced decreased advertising revenue.
+Keywords: "[Newspapers; Advertising; Journalist; Content; Revenue; News]"
+output:
+  bookdown::pdf_document2:
+    citation_package: natbib
+toc: FALSE
+bibliography: references.bib
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+#install.packages("tinytex")
+#install.packages("here")
+#install.packages("haven")
+#install.packages("huxtable")
+#install.packages("scales")
+#install.packages("tidyverse")
+library(bookdown)
+library(tinytex)
+library(haven)
+library(huxtable)
+library(scales)
+library(tidyverse)
+
+newspapers <- read_dta("/Users/cameron/Desktop/STA304final/data/dta/Angelucci_Cage_AEJMicro_dataset.dta")
+
+newspapers <- 
+  newspapers %>% 
+  dplyr::select(year, id_news, after_national, local, national, # Diff in diff variables
+         ra_cst, qtotal, ads_p4_cst, ads_s, # Advertising side dependents
+         ps_cst, po_cst, qtotal, qs_s, rs_cst) %>% #Reader side dependents
+  mutate(ra_cst_div_qtotal = ra_cst / qtotal) %>% # An advertising side dependents needs to be built
+  mutate_at(vars(id_news, after_national, local, national), ~as.factor(.)) %>% # Change some to factors
+  mutate(year = as.integer(year))
+
 ```
 
-## R Markdown
+## Introduction
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+{@citeR}
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+{@alexander_2020}
 
-```{r cars}
-summary(cars)
+{@cite_newspaper_data}
+
+{@citehaven}
+
+
+
+
+```{r}
+
 ```
+## Data
+........
+```{r}
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
 ```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+# References
